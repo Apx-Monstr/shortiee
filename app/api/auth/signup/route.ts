@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import User from "@/models/User";
+import connectToDatabase from "@/lib/mongodb";
 export async function POST(req:NextRequest):Promise<NextResponse>{
     try{
         const body = await req.json();
         const {email, name, password} = body;
         console.log(email, password, name) // verify all these in frontend
-
+        await connectToDatabase()
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return NextResponse.json(
